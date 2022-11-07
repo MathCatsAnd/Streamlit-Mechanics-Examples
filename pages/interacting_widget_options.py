@@ -20,16 +20,19 @@ def get_data():
 
 df = get_data()
 
-def initialize():
-    if (pre+col1+'_possible') not in st.session_state or \
+def initialize(reset):
+    if reset or \
+       (pre+col1+'_possible') not in st.session_state or \
        (pre+col2+'_possible') not in st.session_state:
-        st.session_state[pre+col1+'_possible'] = df[col1].unique()
-        st.session_state[pre+col2+'_possible'] = df[col2].unique()
+       st.session_state[pre+col1+'_possible'] = df[col1].unique()
+       st.session_state[pre+col2+'_possible'] = df[col2].unique()
 
-initialize()
+initialize(False)
 
 def reset():
-    st.session_state.clear()
+    initialize(True)
+    st.session_state[pre+col1+'_selected'] = st.session_state[pre+col1+'_possible']
+    st.session_state[pre+col2+'_selected'] = st.session_state[pre+col2+'_possible']
     return
 
 st.button('Reset',on_click=reset)
