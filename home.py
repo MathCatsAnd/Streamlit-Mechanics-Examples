@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 
 st.write('# Streamlit Code Snippets and Examples')
 
@@ -57,3 +58,9 @@ with st.expander('relabeling images'):
              'were grabbed from a set on Kaggle marked public domain.')
     st.write('[Images Dataset]'\
              '(https://www.kaggle.com/datasets/pavansanagapati/images-dataset)')
+
+with st.expander('Full Session State'):
+    state = pd.DataFrame({'Attributes':st.session_state.keys(),
+                        'Values':st.session_state.values()})
+    state
+    st.button('Refresh')

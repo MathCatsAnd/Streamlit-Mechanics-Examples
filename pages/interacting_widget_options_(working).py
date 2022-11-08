@@ -8,6 +8,10 @@ pre = 'interacting_widget_options__'
 col1 = 'fur'
 col2 = 'color'
 
+if pre+'widgets' not in st.session_state:
+    st.session_state[pre+'widgets'] = 1
+w = st.session_state[pre+'widgets']
+
 @st.experimental_memo
 def get_data():
     data = pd.DataFrame({'fur':['DSH','DSH','DSH','DSH','DSH','DMH',
@@ -31,8 +35,9 @@ initialize(False)
 
 def reset():
     initialize(True)
-    st.session_state[pre+col1+'_selected'] = st.session_state[pre+col1+'_possible']
-    st.session_state[pre+col2+'_selected'] = st.session_state[pre+col2+'_possible']
+    st.session_state[pre+col1+f'_selected_{w}'] = st.session_state[pre+col1+'_possible']
+    st.session_state[pre+col2+f'_selected_{w}'] = st.session_state[pre+col2+'_possible']
+    st.session_state[pre+'widgets'] = (w+1)%2
     return
 
 st.button('Reset',on_click=reset)
@@ -57,17 +62,17 @@ def get_row_values(data, col1, filter1, options1, col2, filter2, options2):
 
 filter = {}
 filter[col1] = st.multiselect(f'Select {col1}',st.session_state[pre+col1+'_possible'], 
-                            key=(pre+col1+'_selected'), 
+                            key=(pre+col1+f'_selected_{w}'), 
                             default = st.session_state[pre+col1+'_possible'],
                             on_change = get_row_values, 
-                            args=(df,col1,(pre+col1+'_selected'),(pre+col1+'_possible'),
-                                  col2,(pre+col2+'_selected'),(pre+col2+'_possible')))
+                            args=(df,col1,(pre+col1+f'_selected_{w}'),(pre+col1+'_possible'),
+                                  col2,(pre+col2+f'_selected_{w}'),(pre+col2+'_possible')))
 filter[col2] = st.multiselect(f'Select {col2}',st.session_state[pre+col2+'_possible'], 
-                            key=(pre+col2+'_selected'),
+                            key=(pre+col2+f'_selected_{w}'),
                             default = st.session_state[pre+col2+'_possible'],
                             on_change = get_row_values, 
-                            args=(df,col2,pre+col2+'_selected',pre+col2+'_possible',
-                                  col1,pre+col1+'_selected',pre+col1+'_possible'))
+                            args=(df,col2,pre+col2+f'_selected_{w}',pre+col2+'_possible',
+                                  col1,pre+col1+f'_selected_{w}',pre+col1+'_possible'))
 
 df[df[col1].isin(filter[col1])][df[col2].isin(filter[col2])]
 
