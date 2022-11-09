@@ -1,11 +1,15 @@
 import streamlit as st
 from math import ceil
-import pandas as pd 
+import pandas as pd
+
+root = 'https://raw.githubusercontent.com/MathCatsAnd/Streamlit-Mechanics-Examples/main/'
 
 def initialize():    
-    df = pd.read_csv('file_list.csv', index_col='file')
+    df = pd.read_csv('file_list.csv')
     df['incorrect']=[False]*df.shape[0]
     df['label']=['']*df.shape[0]
+    df['file']=df['file'].map(lambda x:x.replace("\\", "/"))
+    df.set_index('file', inplace=True)
     return df
 
 if 'relabeling_images__df' not in st.session_state:
@@ -35,7 +39,7 @@ grid = st.columns(row_size)
 col = 0
 for image in batch:
     with grid[col]:
-        st.image(image, caption=df.loc[image]['original'])
+        st.image(root+image, caption=df.loc[image]['original'])
         st.checkbox("Incorrect", key=f'relabeling_images__incorrect_{image}', 
                     value = df.at[image,'incorrect'], 
                     on_change=update, args=(image,'incorrect'))
