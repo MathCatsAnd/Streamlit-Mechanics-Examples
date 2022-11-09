@@ -1,21 +1,11 @@
 import streamlit as st
-from os import listdir
 from math import ceil
 import pandas as pd 
 
 def initialize():    
-    directory = r'images'
-    labeled_list = {}
-    for dir in listdir(directory):
-        for file in listdir(rf'{directory}\{dir}'):
-            labeled_list[rf'{directory}\{dir}\{file}'] = dir
-    files = list(labeled_list.keys())
-    labels = list(labeled_list.values())
-    df = pd.DataFrame({'file':files,
-                       'original':labels,
-                       'incorrect':[False]*len(files),
-                       'label':['']*len(files)})
-    df.set_index('file', inplace=True)
+    df = pd.read_csv('file_list.csv', index_col='file')
+    df['incorrect']=[False]*df.shape[0]
+    df['label']=['']*df.shape[0]
     return df
 
 if 'relabeling_images__df' not in st.session_state:
