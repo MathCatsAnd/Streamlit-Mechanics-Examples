@@ -3,6 +3,16 @@ import pandas as pd
 
 st.write('# Streamlit Code Snippets and Examples')
 
+with st.expander('add data'):
+    st.write('## Adding Rows of User-Entered Data')
+    st.write('Re: post from Streamlit Forums user FrocketGaming')
+    st.write('[Button to add new row of inputs]'\
+             '(https://discuss.streamlit.io/t/button-to-add-new-row-of-inputs' \
+             '/33245)')
+    st.write('This is an example for users to add rows of data. Three ' \
+             'implementations are included using a dataframe, strings, and ' \
+             'widgets to hold data.')
+
 with st.expander('color selector'):
     st.write('## Using Buttons to Override or Reset Color Pickers')
     st.write('Re: post from Streamlit Forums user mathcatsand (me!)')
