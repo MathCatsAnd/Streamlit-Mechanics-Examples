@@ -16,7 +16,7 @@ if st.session_state.logged == False:
     log = pd.concat([log,now], axis=0, ignore_index=True)
     log.tail(10).to_csv('files/run_by_script_log.csv', index=False) 
 
-log.tail(10)
+st.write(log.tail(10))
 
 def again():
     st.session_state.logged = False
