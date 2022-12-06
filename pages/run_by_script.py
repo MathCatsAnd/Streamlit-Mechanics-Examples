@@ -14,9 +14,9 @@ if st.session_state.logged == False:
     st.session_state.logged = True
     now = pd.DataFrame({'Run Time':[str(datetime.now())]})
     log = pd.concat([log,now], axis=0, ignore_index=True)
-    log.tail().to_csv('files/run_by_script_log.csv', index=False) 
+    log.tail(10).to_csv('files/run_by_script_log.csv', index=False) 
 
-log
+log.tail(10)
 
 def again():
     st.session_state.logged = False
