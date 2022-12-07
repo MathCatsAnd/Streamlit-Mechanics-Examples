@@ -75,4 +75,5 @@ with st.expander('Full Session State'):
     state
     st.button('Refresh')
 
-print('Home was executed.')
+import os
+os.write('Home was executed.')
