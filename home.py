@@ -76,4 +76,4 @@ with st.expander('Full Session State'):
     st.button('Refresh')
 
 import os
-os.write('Home was executed.')
+os.write(1,b'Home was executed.\n')
