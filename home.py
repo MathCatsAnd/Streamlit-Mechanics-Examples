@@ -74,3 +74,5 @@ with st.expander('Full Session State'):
                         'Values':st.session_state.values()})
     state
     st.button('Refresh')
+
+print('Home was executed.')
