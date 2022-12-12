@@ -22,7 +22,7 @@ body = st.radio('Highlight Body Container',[1,2,3,4])
 
 st.markdown('#### Be sure nothing is mixed in with the containers up until the nth one '\
             'you are trying to format. The introduction of some other div will '\
-            'mess of the index to the nth container.')
+            'mess up the index to the nth container.')
 
 css_sidebar_container = f'''
 <style>
