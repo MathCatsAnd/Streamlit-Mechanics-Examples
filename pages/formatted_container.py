@@ -20,7 +20,7 @@ with st.container():
     st.write('This is container 4.')
 body = st.radio('Highlight Body Container',[1,2,3,4])
 
-st.markdown('#### Be nothing is mixed in with the containers up until the nth one '\
+st.markdown('#### Be sure nothing is mixed in with the containers up until the nth one '\
             'you are trying to format. The introduction of some other div will '\
             'mess of the index to the nth container.')
 
