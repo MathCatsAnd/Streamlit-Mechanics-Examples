@@ -75,29 +75,40 @@ def commit_question(qid, widget_key):
     df_q.loc[qid, 'Question'] = st.session_state[widget_key]
 
 # Dispaly an answer and all associated questions
-def display_qna(aid):
+def display_qna(aid, render_as='stack'):
     df_a = st.session_state.answers
     df_q = st.session_state.questions
-    st.button('Remove QnA', key=f'a_remove_{aid}', on_click=remove_answer, args=[aid])
-    st.write('## Answer')
-    st.text_area('Answer',df_a.loc[aid,'Answer'], label_visibility='collapsed', 
+    qna_block = st.container()
+    if  render_as == 'stack':
+        a_block = qna_block.container()
+        q_block = qna_block.container()
+        mod_block = qna_block.container()
+    else:
+        left, right = qna_block.columns(2)
+        a_block = left.container()
+        q_block = right.container()
+        mod_block = left.container()
+    a_block.button('Remove QnA', key=f'a_remove_{aid}', on_click=remove_answer, args=[aid])
+    a_block.write('## Answer')
+    a_block.text_area('Answer',df_a.loc[aid,'Answer'], label_visibility='collapsed', 
             key=f'a_{aid}', on_change=commit_answer, args=[aid,f'a_{aid}'])
-    st.write('### Questions')
+    q_block.write('### Questions')
     # Provide auto-numbering of questions via index for user-friendly display
     for index, qid in enumerate(df_q[df_q['AID'] == aid].index, start=1):
-        st.text_input(str(index),df_q.loc[qid,'Question'], 
+        q_block.text_input(str(index),df_q.loc[qid,'Question'], 
                 key=f'q_{qid}', on_change=commit_question, args=[qid,f'q_{qid}'])
     qid_list = list(df_q[df_q['AID'] == aid].index)
-    st.write('---')
+    mod_block.write('---')
 
     # Options to modify question list
-    st.write('### Modify QnA')
-    st.button('Add Question', on_click=add_question, args=[aid], key=f'q_add_{aid}')
-    st.button('Remove All Questions', on_click=reset_questions, args=[aid], key=f'q_clear_{aid}')
+    mod_block.write('### Modify QnA')
+    mod_block.button('Add Question', on_click=add_question, args=[aid], key=f'q_add_{aid}')
+    mod_block.button('Remove All Questions', on_click=reset_questions, args=[aid], key=f'q_clear_{aid}')
     # Use format_func to convert between user-facing auto-numbering and internal qid (question id)
-    qid = st.selectbox('Specific Question', qid_list, 
+    qid = mod_block.selectbox('Specific Question', qid_list, 
             format_func=lambda qid:qid_list.index(qid)+1, key=f'q_select_{aid}')
-    st.button('Remove Specific Question', key=f'q_remove_{aid}', on_click=remove_question, args=(aid,qid))
+    mod_block.button('Remove Specific Question', key=f'q_remove_{aid}', on_click=remove_question, args=(aid,qid))
+    qna_block.write('<hr style="border-top: 5px solid;" />', unsafe_allow_html=True)
 
 # Helper function to change page number via button callback
 def change_page(increment):
@@ -129,22 +140,33 @@ with st.sidebar:
     st.write('---')
     # Button to add new answer block
     st.button('New QnA', on_click=add_answer)
+    display_type = st.radio("List by",['columns','rows'])
 
 
 # Render QnAs saved to the dataframes
 df_a = st.session_state.answers
 df_q = st.session_state.questions
-
-columns = st.columns(st.session_state.a_per_page)
 answer_index = list(df_a.index)
 
 if len(answer_index) > 0:
     first = (page-1)*a_per_page
     next = min(first + a_per_page, len(answer_index))
 
-    for i in range(first,next):
-        with columns[i%a_per_page]:
-            display_qna(answer_index[i])
+    if display_type == 'columns':
+        render_qna_item_as = 'stack'
+        blocks = st.columns(st.session_state.a_per_page)
+    else:
+        render_qna_item_as = '2columns'
+        blocks = []
+        for c in range(st.session_state.a_per_page):
+            blocks.append(st.container())
+    if len(answer_index) > 0:
+        first = (page-1)*a_per_page
+        next = min(first + a_per_page, len(answer_index))
+        for i in range(first,next):
+            with blocks[i%a_per_page]:
+                display_qna(answer_index[i], render_qna_item_as)
+
 
 with st.expander('Saved DataFrames'):
     st.session_state.questions
