@@ -1,7 +1,6 @@
 import streamlit as st
 import mimetypes
 from streamlit import runtime
-from streamlit.runtime import caching
 
 image = './files/cat_background.jpg'
 image_id = 'please_do_not_crash'
