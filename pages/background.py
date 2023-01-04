@@ -1,13 +1,30 @@
 import streamlit as st
+import mimetypes
+from streamlit import runtime
+from streamlit.runtime import caching
 
-css = '''
-.stApp {
-    background: url('https://raw.githubusercontent.com/MathCatsAnd/Streamlit-Mechanics-Examples/main/files/cat_background.jpg');
-}
-.stApp > header {
+image = './files/cat_background.jpg'
+image_id = 'please_do_not_crash'
+
+# Copied from Streamlit's implementation of st.image
+def serve_image(image, image_id):
+    mimetype, _ = mimetypes.guess_type(image)
+    if mimetype is None:
+        mimetype = "application/octet-stream"
+
+    url = runtime.get_instance().media_file_mgr.add(image, mimetype, image_id)
+    caching.save_media_data(image, mimetype, image_id)
+    return(url)
+
+url = serve_image(image, image_id)
+
+css = f'''
+.stApp {{
+    background-image: url(.{url});
+}}
+.stApp > header {{
     background-color: transparent;
-}
-
+}}
 '''
 st.markdown(f'<style>{css}</style>', unsafe_allow_html=True)
 
