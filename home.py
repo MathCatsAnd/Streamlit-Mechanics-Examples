@@ -77,3 +77,4 @@ with st.expander('Full Session State'):
 
 import os
 os.write(1,b'Home was executed.\n')
+os.system('free -g')
