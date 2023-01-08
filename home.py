@@ -79,7 +79,15 @@ import os
 os.write(1,b'Home was executed.\n')
 # os.system('cat /proc/meminfo')
 
+
+# Does not work as expected. ToDo.
+# def clear_cache():
+#     os.system('streamlit cache clear')
+
 def clear_cache():
-    os.system('streamlit cache clear')
+    keys = list(st.session_state.keys())
+    for key in keys:
+        st.session_state.pop(key)
 
 st.button('Clear Cache', on_click=clear_cache)
+
