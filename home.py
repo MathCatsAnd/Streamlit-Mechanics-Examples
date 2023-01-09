@@ -77,12 +77,8 @@ with st.expander('Full Session State'):
 
 import os
 os.write(1,b'Home was executed.\n')
-# os.system('cat /proc/meminfo')
-
-
-# Does not work as expected. ToDo.
-# def clear_cache():
-#     os.system('streamlit cache clear')
+os.system('cat /proc/meminfo')
+os.system('cat /proc/cpuinfo')
 
 def clear_cache():
     keys = list(st.session_state.keys())
@@ -90,4 +86,3 @@ def clear_cache():
         st.session_state.pop(key)
 
 st.button('Clear Cache', on_click=clear_cache)
-
