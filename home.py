@@ -77,8 +77,10 @@ with st.expander('Full Session State'):
 
 import os
 os.write(1,b'Home was executed.\n')
-os.system('cat /proc/meminfo')
-os.system('cat /proc/cpuinfo')
+# os.system('cat /proc/meminfo')
+# os.system('cat /proc/cpuinfo')
+os.system('top')
+
 
 def clear_cache():
     keys = list(st.session_state.keys())
