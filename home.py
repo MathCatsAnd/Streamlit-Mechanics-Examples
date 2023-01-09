@@ -79,7 +79,7 @@ import os
 os.write(1,b'Home was executed.\n')
 # os.system('cat /proc/meminfo')
 # os.system('cat /proc/cpuinfo')
-os.system('top')
+os.system('dmidecode')
 
 
 def clear_cache():
