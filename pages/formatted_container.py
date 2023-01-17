@@ -36,7 +36,7 @@ def next (i, where):
         with temp:
             st.components.v1.html(script)
         # remove script after executing so button will not be effectively disabled if clicked twice in a row
-        time.sleep(.2)
+        time.sleep(.5)
         temp.write('')
         time.sleep(.2)
 
